@@ -14,13 +14,13 @@ namespace bootloader;
  */
 class Autoloader{
 
-    protected static $sysRoot = array();
+    protected static $systemRoot = array();
     protected static $instance;
     protected $classPrefixes = array();
 
     protected function __construct()
     {
-        static::$sysRoot = [
+        static::$systemRoot = [
             __DIR__.'/../../',//默认的项目根目录
             __DIR__.'/../'// vendor目录
         ];
@@ -51,10 +51,10 @@ class Autoloader{
         static $called;
         if(!$called) {
             // 取消默认的项目根目录
-            unset(static::$sysRoot[0]);
+            unset(static::$systemRoot[0]);
             $called = true;
         }
-        static::$sysRoot[] = $path;
+        static::$systemRoot[] = $path;
         return $this;
     }
 
@@ -67,7 +67,7 @@ class Autoloader{
     public function loadByNamespace($name)
     {
         $classPath = str_replace('\\', DIRECTORY_SEPARATOR ,$name);
-        foreach(static::$sysRoot as $k => $root) {
+        foreach(static::$systemRoot as $k => $root) {
             foreach (['.inc','.php'] as $ext) {
                 $classFile = $root . $classPath . $ext;
                 if (is_file($classFile)) {
